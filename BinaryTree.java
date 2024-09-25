@@ -1,6 +1,6 @@
 
 /*
- * *** PLACE YOUR NAME / SECTION HERE ***
+ * *** Zaynah Hussaini 001 ***
  *
  * Homework # 2 (Programming Assignment). This Java class defines a few basic
  * manipulation operations of a binary trees.
@@ -221,6 +221,18 @@ public class BinaryTree {
      */
 
     private void replaceValueHelper(Node node, int oldVal, int newVal) {
+        if (node == null) {
+            return;
+        }
+
+        // Replace the value if it matches oldVal
+        if (node.data == oldVal) {
+            node.data = newVal;
+        }
+
+        // Recursively call on left and right children
+        replaceValueHelper(node.left, oldVal, newVal);
+        replaceValueHelper(node.right, oldVal, newVal);
 
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
@@ -243,11 +255,15 @@ public class BinaryTree {
      */
 
     private int findMinHelper(Node node) {
+        if (node == null) {
+            return Integer.MAX_VALUE; // Return max value if tree is empty
+        }
+        // Find the minimum value from the current node and recurse left and right
+        int minValue = Math.min(node.data, Math.min(findMinHelper(node.left), findMinHelper(node.right)));
 
+        return minValue;
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
-
-        return Integer.MAX_VALUE;
     }
 
 
@@ -265,14 +281,22 @@ public class BinaryTree {
      */
 
     private int nodesGTHelper(Node node, int val) {
-
-        // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
-        // BINARY TREE (WHICH IS BASED ON RECURSION)
-
-        // return -1; // RECALL, IF TREE IS EMPTY, RETURN -1
-
-
-        return -1;
+        if (node == null) {
+            return 0;
+        }
+        int[] answer = new int[1];
+        nodesGTaux(node, answer, val);
+        return answer[0];
+        }
+    private void nodesGTaux(Node node, int[] answer, int val) {
+        if (node == null) {
+            return;
+        }
+        if(node.data > val) {
+            answer[0] = answer[0] + 1;
+        }
+        nodesGTaux(node.left, answer, val);
+        nodesGTaux(node.right, answer, val);
     }
 
 
@@ -303,7 +327,25 @@ public class BinaryTree {
     }
 
     private int[] averageHelper(Node n) {
-
+        if (n == null) {
+            return new int[]{0, 0};
+        }
+        int Sum = sum(n);
+        int Count = count(n);
+        return new int[]{Sum, Count};
+    }
+    private int sum(Node n) {
+        if (n == null){
+            return 0;
+        }
+        return sum(n.left) + sum(n.right) + n.data;
+    }
+    private int count(Node n){
+        if (n == null){
+            return 0;
+        }
+        return count(n.left) + count(n.right) + 1;
+    }
         // ADD YOUR CODE HERE -- USE DEPTH FIRST SEARCH OF
         // BINARY TREE (WHICH IS BASED ON RECURSION)
 
@@ -311,6 +353,4 @@ public class BinaryTree {
         // COUNT LOCATIONS IN THE RETURNED ARRAY AS SHOWN BELOW, ELSE
         // THE 'SUM' IS RETURNED IN INDEX LOCATION 0, AND COUNT IS LOCATION 1
 
-        return new int[]{0, 0};
     }
-}
